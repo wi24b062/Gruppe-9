@@ -1,9 +1,9 @@
 package model;
-
 public class Price {
-    private final double pricePerKwh;
-    private final double pricePerMinute;
-    public Price(double kwh, double minute){ this.pricePerKwh = kwh; this.pricePerMinute = minute; }
-    public double getPricePerKwh(){ return pricePerKwh; }
-    public double getPricePerMinute(){ return pricePerMinute; }
+    private final double perKwh;
+    private final double perMinute;
+
+    public Price(double perKwh, double perMinute){ this.perKwh = perKwh; this.perMinute = perMinute; }
+    public double getPerKwh(){ return perKwh; }
+    public double getPerMinute(){ return perMinute; }
 }
