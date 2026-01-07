@@ -1,31 +1,51 @@
 Feature: Customer Management
   As an operator
-  I want to manage customers
-  So that I can maintain the customer database
+  I want to create, update, delete and view customers
+  So that I can maintain a correct customer database
 
   Background:
     Given the system is empty
 
-  Scenario: Register a new customer
-    When I register a customer with id "C1" and name "Max"
-    Then the customer "C1" exists
+  Scenario: Register multiple customers with personal data
+    When the operator registers the following customers:
+      | id | firstName | lastName   | address                          | email                       |
+      | C1 | Max       | Mustermann | Simmeringer Hauptstraße 10, Wien | max.mustermann@mail.com     |
+      | C2 | Anna      | Huber      | Favoritenstraße 45, Wien         | anna.huber@mail.com         |
+      | C3 | Lukas     | Gruber     | Döblinger Hauptstraße 22, Wien   | lukas.gruber@mail.com       |
+      | C4 | Sarah     | Novak      | Brigittenauer Lände 5, Wien      | sarah.novak@mail.com        |
+      | C5 | Paul      | Steiner    | Ottakringer Straße 88, Wien      | paul.steiner@mail.com       |
+    Then the system should contain the following customers:
+      | id | firstName | lastName   | address                          | email                       |
+      | C1 | Max       | Mustermann | Simmeringer Hauptstraße 10, Wien | max.mustermann@mail.com     |
+      | C2 | Anna      | Huber      | Favoritenstraße 45, Wien         | anna.huber@mail.com         |
+      | C3 | Lukas     | Gruber     | Döblinger Hauptstraße 22, Wien   | lukas.gruber@mail.com       |
+      | C4 | Sarah     | Novak      | Brigittenauer Lände 5, Wien      | sarah.novak@mail.com        |
+      | C5 | Paul      | Steiner    | Ottakringer Straße 88, Wien      | paul.steiner@mail.com       |
 
-  Scenario: View customer info
-    Given a customer with id "C1" and name "Max" exists
-    When I request the customer info for "C1"
-    Then the customer name should be "Max"
+  Scenario: Update customer address
+    Given the following customers exist:
+      | id | firstName | lastName |
+      | C5 | Paul      | Steiner  |
+    When the operator updates the address of customer "C5" to "Meidlinger Hauptstraße 1, Wien"
+    Then the customer "C5" should have address "Meidlinger Hauptstraße 1, Wien"
 
-  Scenario: Edit customer
-    Given a customer with id "C1" and name "Max" exists
-    When I change customer "C1" name to "Maximilian"
-    Then the customer name should be "Maximilian"
+  Scenario: Delete a customer
+    Given the following customers exist:
+      | id |
+      | C1 |
+      | C2 |
+      | C3 |
+      | C4 |
+      | C5 |
+    When the operator deletes customer "C3"
+    Then the system should contain the following customers:
+      | id |
+      | C1 |
+      | C2 |
+      | C4 |
+      | C5 |
 
-  Scenario: Deactivate customer
-    Given a customer with id "C1" and name "Max" exists
-    When I deactivate customer "C1"
-    Then customer "C1" should be inactive
-
-  Scenario: Delete customer
-    Given a customer with id "C1" and name "Max" exists
-    When I delete customer "C1"
-    Then customer "C1" should not exist
+  Scenario: Registering a customer with duplicate email is rejected
+    Given a customer with email "max.mustermann@mail.com" exists
+    When the operator tries to register another customer with the same email
+    Then the registration should be rejected

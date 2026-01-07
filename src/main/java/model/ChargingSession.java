@@ -1,25 +1,17 @@
 package model;
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class ChargingSession {
-    private final String id;
-    private final String customerId;
-    private final String chargerId;
-    private final LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private double energyKwh;
-    private double totalCost;
+    private String id = UUID.randomUUID().toString();
+    private Customer customer;
+    private Charger charger;
 
-    public ChargingSession(String id, String customerId, String chargerId){
-        this.id = id; this.customerId = customerId; this.chargerId = chargerId; this.startTime = LocalDateTime.now();
+    public ChargingSession(Customer c, Charger ch) {
+        this.customer = c;
+        this.charger = ch;
     }
-    public String getId(){ return id; }
-    public String getCustomerId(){ return customerId; }
-    public String getChargerId(){ return chargerId; }
-    public LocalDateTime getStartTime(){ return startTime; }
-    public LocalDateTime getEndTime(){ return endTime; }
-    public double getTotalCost(){ return totalCost; }
-    public void endSession(LocalDateTime end, double energyKwh, double cost){
-        this.endTime = end; this.energyKwh = energyKwh; this.totalCost = cost;
-    }
+
+    public String getId() { return id; }
+    public Customer getCustomer() { return customer; }
+    public Charger getCharger() { return charger; }
 }

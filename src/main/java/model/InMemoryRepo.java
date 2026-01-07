@@ -1,42 +1,23 @@
 package model;
+
 import java.util.*;
+
 public class InMemoryRepo {
-    private static final InMemoryRepo INSTANCE = new InMemoryRepo();
-    private final Map<String, Customer> customers = new HashMap<>();
-    private final Map<String, Location> locations = new HashMap<>();
-    private final Map<String, Charger> chargers = new HashMap<>();
-    private final List<ChargingSession> sessions = new ArrayList<>();
 
-    private InMemoryRepo(){}
+    private static InMemoryRepo INSTANCE = new InMemoryRepo();
 
-    public static InMemoryRepo instance(){ return INSTANCE; }
+    public List<Location> locations = new ArrayList<>();
+    public List<Customer> customers = new ArrayList<>();
+    public List<ChargingSession> sessions = new ArrayList<>();
 
-    public void clear(){
-        customers.clear(); locations.clear(); chargers.clear(); sessions.clear();
+    public static InMemoryRepo instance() {
+        return INSTANCE;
     }
 
-    // customers
-    public void saveCustomer(Customer c){ customers.put(c.getId(), c); }
-    public Customer findCustomerById(String id){ return customers.get(id); }
-
-    // locations
-    public void saveLocation(Location l){ locations.put(l.getName(), l); }
-    public Location findLocationByName(String name){ return locations.get(name); }
-
-    // chargers
-    public void saveCharger(Charger c){ chargers.put(c.getId(), c); }
-    public Charger findChargerById(String id){ return chargers.get(id); }
-
-    // sessions
-    public void saveSession(ChargingSession s){ sessions.add(s); }
-    public List<ChargingSession> getSessions(){ return Collections.unmodifiableList(sessions); }
-
-    public Location findLocationByChargerId(String chargerId){
-        for(Location l : locations.values()){
-            for(Charger c : l.getChargers()){
-                if(c.getId().equals(chargerId)) return l;
-            }
-        }
-        return null;
+    public void clear() {
+        locations.clear();
+        customers.clear();
+        sessions.clear();
     }
 }
+

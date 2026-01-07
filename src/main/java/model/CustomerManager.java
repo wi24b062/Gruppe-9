@@ -1,11 +1,27 @@
 package model;
+
+import java.util.List;
+
 public class CustomerManager {
-    private final InMemoryRepo repo = InMemoryRepo.instance();
-    public Customer register(String id, String name){
-        Customer c = new Customer(id, name); repo.saveCustomer(c); return c;
+
+    private InMemoryRepo repo = InMemoryRepo.instance();
+
+    public void register(String id, String name) {
+        repo.customers.add(new Customer(id, name));
     }
-    public void topUp(String id, double amount){
-        Customer c = repo.findCustomerById(id); if(c!=null) c.topUp(amount);
+
+    public void topUp(String id, double amount) {
+        find(id).addBalance(amount);
     }
-    public Customer find(String id){ return repo.findCustomerById(id); }
+
+    public Customer find(String id) {
+        return repo.customers.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    public List<Customer> getAll() {
+        return repo.customers;
+    }
 }
